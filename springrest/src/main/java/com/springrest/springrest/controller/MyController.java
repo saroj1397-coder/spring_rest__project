@@ -25,6 +25,7 @@ public class MyController {
 	//get all courses
 	@GetMapping("/courses")
 	public List<Course> getCourses(){
+		System.out.println("chetna");
 		
 		return courseService.getCourses();
 	}
