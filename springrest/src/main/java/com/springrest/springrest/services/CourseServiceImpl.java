@@ -41,7 +41,12 @@ public class CourseServiceImpl implements CourseService  {
 		
 		return courseDao.getById(id);
 	}
-
+//	@Override
+//	public Course getCourse(Long id) {
+//		return courseDao.findById(id).get();
+//	}
+//	
+	
 	@Override
 	public Course addCourse(Course course) {
 	
