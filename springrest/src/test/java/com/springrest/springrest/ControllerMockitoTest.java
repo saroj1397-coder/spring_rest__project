@@ -28,6 +28,7 @@ import com.springrest.springrest.services.CourseService;
 public class ControllerMockitoTest {
 //if I want to test the controller class by calling the methods through url we must start the springboot application
 //without starting we cant test controller class's method through urls
+	// and for this MockMVC comes into picture
 	
 	@Mock
 	private CourseService courseService;
