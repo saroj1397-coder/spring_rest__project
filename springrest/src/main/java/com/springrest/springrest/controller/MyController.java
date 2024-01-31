@@ -48,14 +48,28 @@ public class MyController {
 		return courseService.addCourse(course);
 	}
 	
-	@PutMapping("/courses")
-	public Course updateCourse(@RequestBody Course course){
-		
-		return courseService.updateCourse(course);
-	}
+	  @PutMapping("/courses")
+	    public ResponseEntity<Course> updateCourse(@RequestBody Course updatedCourse) {
+		  Course existingCourse=null;
+		  try {
+		   existingCourse = courseService.getCourse(updatedCourse.getId());
+		   System.out.println("-------------------");
+			  System.out.println("existingCourse" + existingCourse);
+			  System.out.println("-------------------");
+		  
+		  }
+		  catch(Exception e) {
+			  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		  }
+
+		    Course updated = courseService.updateCourse(updatedCourse);
+		    
+		//    return (ResponseEntity<Course>) ResponseEntity.notFound();
+		  return ResponseEntity.ok(updated);
+	    }
 	
 	@DeleteMapping("/courses/{id}")
-	public ResponseEntity<HttpStatus> deleteCourse(@PathVariable Long id){
+	public  ResponseEntity<HttpStatus> deleteCourse(@PathVariable Long id){
 		try {
 			courseService.deleteCourse(id);
 			return new ResponseEntity<>(HttpStatus.OK);
