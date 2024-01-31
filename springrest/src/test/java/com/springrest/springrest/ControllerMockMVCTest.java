@@ -1,5 +1,6 @@
 package com.springrest.springrest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -78,12 +80,19 @@ public class ControllerMockMVCTest {
 	public void test_getCourses() throws Exception {
 		
 		when(courseService.getCourses()).thenReturn(myCourses);
-		//now we hav done the mocking of the dependency but now we want to call those controller methos using the url
+		//now we hav done the mocking of the dependency but now we want to call those controller
+		//method using the url
 		
 //		
-//		Yes, it's absolutely okay to write tests focusing on the HTTP status code, especially if your controller doesn't explicitly handle or set the status code. Checking the HTTP status code is a fundamental aspect of testing the behavior of your API.
-//		By verifying the status code, you are ensuring that your endpoint is returning the expected outcome. For example, a status code of 200 (OK) indicates a successful response, while other status codes may represent different scenarios (e.g., 404 for not found, 500 for server error).
-//		As your application evolves, and if you start handling status codes in your controller logic, you can update your tests accordingly to include more specific assertions. For now, testing the status code is a good practice, and it provides a basic level of confidence in the correctness of your API endpoints.
+//		Yes, it's absolutely okay to write tests focusing on the HTTP status code, especially if your 
+		//controller doesn't explicitly handle or set the status code. 
+		//Checking the HTTP status code is a fundamental aspect of testing the behavior of your API.
+//		By verifying the status code, you are ensuring that your endpoint is returning the 
+		//expected outcome. For example, a status code of 200 (OK) indicates a successful response, 
+		//while other status codes may represent different scenarios (e.g., 404 for not found, 500 for server error).
+//		As your application evolves, and if you start handling status codes in your controller logic, you can update your 
+		//tests accordingly to include more specific assertions. For now, testing the status code is a good practice, and it
+		//provides a basic level of confidence in the correctness of your API endpoints.
 		
 		this.mockMvc.perform(get("/courses"))//so we r testing without calling controller methods through url only
 			.andExpect(status().isOk())
@@ -98,6 +107,14 @@ public class ControllerMockMVCTest {
 		
 		this.mockMvc.perform(get("/courses/{id}", cid))
 			.andExpect(status().isOk())
+//			 .andDo(result -> {
+//				 String responseBody = result.getResponse().getContentAsString();
+//				    System.out.println("Response Body: " + responseBody);
+//				    assertThat(responseBody).isNotEmpty();
+//				    assertThat(responseBody).contains("\"id\":" + myCourse.getId(),
+//	                        "\"title\":\"" + myCourse.getTitle() + "\"",
+//	                        "\"description\":\"" + myCourse.getDescription() + "\"");
+//	            		        })
 			.andExpect(MockMvcResultMatchers.jsonPath(".id").value(1)) // // mockMVC return the object in JSON format not in object for that we hav special method MockMvcResultMatchers
 			.andExpect(MockMvcResultMatchers.jsonPath(".title").value("hhd")) // for jsonPath(".id") we hav nice extension
 			.andExpect(MockMvcResultMatchers.jsonPath(".description").value("jhdj"))
@@ -110,7 +127,8 @@ public class ControllerMockMVCTest {
 		
 		when(courseService.addCourse(myCourse)).thenReturn(myCourse);
 		
-		//for sending data we will hav to confirt the object into json format for that we hav special class ObjectMapper
+		//for sending data we will hav to convert the object into json format for that we hav special class ObjectMapper
+		//becoz mockMVC will accept only JSON response not the java object
 		
 		ObjectMapper mapper= new ObjectMapper();
 		String jsonbody=mapper.writeValueAsString(myCourse); //inside string we hav json data only
@@ -129,6 +147,10 @@ public class ControllerMockMVCTest {
 /*	@Test
 	@Order(4)
 	public void test_updateCourse() throws Exception {
+	
+		System.out.println(myCourse.getId());
+		System.out.println(myCourse.getTitle());
+		System.out.println(myCourse.getDescription());
 		
 		when(courseService.updateCourse(myCourse)).thenReturn(myCourse);
 		
@@ -138,11 +160,30 @@ public class ControllerMockMVCTest {
 		this.mockMvc.perform(put("/courses")
 					.content(jsonbody)
 					.contentType(MediaType.APPLICATION_JSON)
+					.characterEncoding("UTF-8")
 					)
 			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("id").value(1))
+//			 .andDo(result -> {
+//				 String responseBody = result.getResponse().getContentAsString();
+//				    System.out.println("Response Body: " + responseBody);
+//				    assertThat(responseBody).isNotEmpty();
+//				    assertThat(responseBody).contains("\"id\":" + myCourse.getId(),
+//	                        "\"title\":\"" + myCourse.getTitle() + "\"",
+//	                        "\"description\":\"" + myCourse.getDescription() + "\"");
+//	            		        })
+//			//.andDo(print());
+			.andExpect(MockMvcResultMatchers.jsonPath("id").value(1)) 
 			.andExpect(MockMvcResultMatchers.jsonPath("title").value("hhd"))
 			.andExpect(MockMvcResultMatchers.jsonPath("description").value("jhdj"))
+			// Add assertions to verify the response body
+//			.andExpect(jsonPath("$.id").value(1))
+//			.andExpect(jsonPath("$.title").value("hhd"))
+//			.andExpect(jsonPath("$.description").value("jhdj"))
+			
+//			.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+//			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("hhd"))
+//			.andExpect(MockMvcResultMatchers.jsonPath("$.description").value("jhdj"))
+
 			.andDo(print());
 		
 //		
@@ -163,9 +204,9 @@ public class ControllerMockMVCTest {
 //		... 7 more	
 		
 	}
-	*/
+*/	
 	@Test
-	@Order(4)
+	@Order(5)
 	public void test_deleteCourse() throws Exception {
 		
 	this.mockMvc.perform(delete("/courses/{id}",cid))
