@@ -1,6 +1,6 @@
 -- sql/mysql-schema.sql
---DROP TABLE IF EXISTS authorities;
---DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS authorities;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE authorities (
     username VARCHAR(50) NOT NULL,
