@@ -73,10 +73,10 @@ public class BasicAuthSecurityConfiguartion {
 //				.build();
 //	}
 	
-//	  @Bean
-//	    public PasswordEncoder passwordEncoder() {
-//	        return new BCryptPasswordEncoder();
-//	    }
+	  @Bean
+	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	        return new BCryptPasswordEncoder();
+	    }
 
 
 	  @Bean
@@ -87,12 +87,16 @@ public class BasicAuthSecurityConfiguartion {
 	        // Add users and authorities as needed
 	        
 	        var user= User.withUsername("saroj1")
-					.password("{noop}dummy")
+					//.password("{noop}dummy")
+	        		.password("dummy")
+	        		.passwordEncoder(str-> bCryptPasswordEncoder().encode(str))
 					.roles("USER")
 					.build();
 			
 			var admin= User.withUsername("admin1")
-					.password("{noop}dummy")
+					//.password("{noop}dummy")
+					.password("dummy")
+	        		.passwordEncoder(str-> bCryptPasswordEncoder().encode(str))
 					.roles("ADMIN")
 					.build();
 

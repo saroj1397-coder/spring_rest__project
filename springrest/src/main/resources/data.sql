@@ -1,3 +1,6 @@
+-- I dont see any uses of this here I will check why I created this as 
+--already repository layer is there
+
 CREATE TABLE Course (
     id NUMBER PRIMARY KEY,
     title VARCHAR2(50),
