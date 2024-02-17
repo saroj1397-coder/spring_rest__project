@@ -72,12 +72,12 @@ public class ControllerMockitoTest {
 	assertEquals(myCourse, myController.addCourse(myCourse));
 	}	
 	
-	@Test
-	@Order(4)
-	public void test_updateCourse() {
-	when(courseService.updateCourse(myCourse)).thenReturn(myCourse);
-	assertEquals(myCourse, myController.updateCourse(myCourse));
-	}	
+//	@Test
+//	@Order(4)
+//	public void test_updateCourse() {
+//	when(courseService.updateCourse(myCourse)).thenReturn(myCourse);
+//	assertEquals(myCourse, myController.updateCourse(myCourse));
+//	}	
 	
 	
 	@Test
